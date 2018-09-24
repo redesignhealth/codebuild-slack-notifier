@@ -9,7 +9,7 @@ provider:
   name: aws
   memorySize: 128
   runtime: nodejs8.10
-  region: eu-west-1
+  region: us-east-2
   environment:
     SLACK_TOKEN: ${ssm:/codebuild-slack-notifier/slack_token~true}
   iamRoleStatements:

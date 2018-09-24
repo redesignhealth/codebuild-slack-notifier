@@ -341,10 +341,15 @@ export const handleCodeBuildEvent = async (
   channel: Channel,
 ): Promise<MessageResult | void> => {
   // State change event
+  console.log("processing the event", channel);
   if (isCodeBuildStateEvent(event)) {
+    console.log("Got a state event");
     if (event.detail['additional-information']['build-complete']) {
+      console.log("PRE findMessageForId");
       const message = await findMessageForId(slack, channel.id, buildId(event));
+      console.log("POST findMessageForId", message);
       if (message) {
+        console.log("Pre sending update to channel");
         return slack.chat.update({
           channel: channel.id,
           attachments: buildEventToMessage(event),
@@ -353,11 +358,15 @@ export const handleCodeBuildEvent = async (
         }) as Promise<MessageResult>;
       }
     }
+    console.log("posting a new message to channel", channel);
     return slack.chat.postMessage({
       channel: channel.id,
       attachments: buildEventToMessage(event),
       text: '',
-    }) as Promise<MessageResult>;
+    }).then(res => {
+      console.log("got a reply for message", res);
+      return res;
+    }).catch(console.error) as Promise<MessageResult>;
   }
   // Phase change event
   const message = await findMessageForId(slack, channel.id, buildId(event));

@@ -9,7 +9,8 @@
   "scripts": {
     "test": "tslint --project . && jest",
     "lint": "tslint --project .",
-    "deploy": "serverless deploy"
+    "deploy": "serverless deploy",
+    "remove": "serverless remove"
   },
   "dependencies": {
     "@slack/client": "^4.6.0",

@@ -65,14 +65,16 @@ export const handler: Handler = async (
   // Get list of channels
   const result = (await slack.channels.list()) as ChannelsResult;
   const requests = result.channels.map(async channel => {
+    console.log('Considering channel ', channel.name);
     if (projectChannels.find(c => c === channel.name)) {
+      console.log('Found a match for channel, handling event', channel);
       if (isCodePipelineEvent(event)) {
         return handleCodePipelineEvent(event, slack, channel);
       }
       return handleCodeBuildEvent(event, slack, channel);
     }
   });
-  Promise.all(requests).then(r => {
+  await Promise.all(requests).then(r => {
     console.log(JSON.stringify(r.filter(i => i != null), null, 2));
     // Add all sent messages to the cache
     /* r.forEach(m => {
