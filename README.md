@@ -13,8 +13,6 @@ To configure the channels that will be notified for a particular build:
 `aws ssm put-parameter --name "/codebuild-slack-notifier/<YOUR BUILD NAME>_channels" --value "channel1,channel2" --type SecureString --overwrite`
 
 
-
-
 Edit the region in serverless.yml to your region
 
 Then run
@@ -25,7 +23,3 @@ npm run deploy
 ```
 
 With AWS credentials that have access to read from SSM and deploy a lambda.
-
-## Configuration
-
-On the build project, set the environment variable `SLACK_NOFITY_CHANNELS` to a comma separated list of channels to notify. Without the `#`.
